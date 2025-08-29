@@ -44,5 +44,6 @@ extern "C" int test_abc() {
   assert(ism.at() == &c);
   assert(ism.in(&a));
   assert(ism.in(&b));
+  cout << ism.go(&a);
   return 0;
 }

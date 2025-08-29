@@ -23,7 +23,8 @@ ostream &operator<<(ostream &os, const my_state *s) {
   return os;
 }
 
-ostream &operator<<(ostream &os, const infinite::state_machine<my_state>::gone &gone) {
+ostream &operator<<(ostream &os,
+                    const infinite::state_machine<my_state>::gone &gone) {
   os << "Exited states: ";
   for (const auto &state : gone.exits) {
     os << state->self()->name << " ";

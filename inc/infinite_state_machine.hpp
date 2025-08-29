@@ -88,6 +88,7 @@ public:
              exits.front() == entries.front()) {
         states.push_back(exits.front());
         exits.pop_front();
+        entries.pop_front();
       }
       for (auto state : entries)
         states.push_back(state);

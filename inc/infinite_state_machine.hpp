@@ -104,7 +104,9 @@ public:
   //! \brief Check if a state is active.
   //! \param state The state to check.
   //! \return Answers \c true if the state is active, \c false otherwise.
-  bool in(State *state) const { return states.contains(state); }
+  bool in(state<Topology> *state) const {
+    return find(states.cbegin(), states.cend(), state) != states.cend();
+  }
 
 private:
   //! \brief The deque holding the active states.

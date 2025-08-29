@@ -23,14 +23,23 @@ ostream &operator<<(ostream &os, const my_state *s) {
   return os;
 }
 
+ostream &operator<<(ostream &os, const infinite::state_machine<my_state>::gone &gone) {
+  os << "Exited states: ";
+  for (const auto &state : gone.exits) {
+    os << state->self()->name << " ";
+  }
+  os << endl;
+  os << "\nEntered states: ";
+  for (const auto &state : gone.entries) {
+    os << state->self()->name << " ";
+  }
+  os << endl;
+  return os;
+}
+
 extern "C" int test_abc() {
   auto done = ism.go(&c);
-  for (const auto &state : done.exits) {
-    cout << "Exited state: " << state->self()->name << endl;
-  }
-  for (const auto &state : done.entries) {
-    cout << "Entered state: " << state->self()->name << endl;
-  }
+  cout << done;
   assert(ism.at() == &c);
   assert(ism.in(&a));
   assert(ism.in(&b));

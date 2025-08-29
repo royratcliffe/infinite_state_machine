@@ -79,7 +79,7 @@ public:
       //
       // Avoid duplicating states in the entries deque.
       // Duplicates correspond to cyclic state topologies.
-      for (; to && find(entries.cbegin(), entries.cend(), to) == entries.cend();
+      for (; to && std::find(entries.cbegin(), entries.cend(), to) == entries.cend();
            to = to->super)
         entries.push_front(to);
       // Now match up the exits and entries.
@@ -110,7 +110,7 @@ public:
   //! \param state The state to check.
   //! \return Answers \c true if the state is active, \c false otherwise.
   bool in(state<Topology> *state) const {
-    return find(states.cbegin(), states.cend(), state) != states.cend();
+    return std::find(states.cbegin(), states.cend(), state) != states.cend();
   }
 
 private:

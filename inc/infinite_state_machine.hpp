@@ -21,15 +21,17 @@ namespace infinite {
 //! \brief A default abstract state representation.
 //! \details This struct serves as a base for all states in the state machine,
 //! unless otherwise overridden by a derived class.
-struct state {
-  struct state *super;
+template <typename Topology> struct state {
+  using state_ptr = Topology *;
+  state_ptr super;
+  state_ptr self() { return static_cast<state_ptr>(this); }
 };
 
 //! \brief A state machine topology navigation class.
 //! \details This class provides methods to navigate through the state machine's
 //! topology, allowing for transitions between states and querying the current
 //! state.
-template <typename State = state> class state_machine {
+template <typename Topology> class state_machine {
 public:
   //! \brief Destructor for the state machine.
   //! \details Cleans up the state machine and releases any resources.
@@ -48,7 +50,7 @@ public:
   //! handlers for the exited states from back to front, then run all the entry
   //! handlers for the entered states similarly.
   struct gone {
-    std::deque<State *> exits, entries;
+    std::deque<state<Topology> *> exits, entries;
   };
 
   //! \brief Transition to a new state.
@@ -65,8 +67,8 @@ public:
   //! \param to The new state to transition to.
   //! \return A struct containing the states that were exited and entered during
   //! the transition.
-  struct gone go(State *to) {
-    std::deque<State *> exits, entries;
+  struct gone go(state<Topology> *to) {
+    std::deque<state<Topology> *> exits, entries;
     // super, sub --> sub, super (reverse)
     while (!states.empty()) {
       exits.push_front(states.back());
@@ -99,7 +101,9 @@ public:
 
   //! \brief Get the current state.
   //! \return The current state, or \c nullptr if there is no active state.
-  State *at() const { return states.empty() ? nullptr : states.back(); }
+  state<Topology> *at() const {
+    return states.empty() ? nullptr : states.back();
+  }
 
   //! \brief Check if a state is active.
   //! \param state The state to check.
@@ -118,7 +122,7 @@ private:
   //!
   //! \note This deque is not thread-safe and should be accessed
   //! only from a single thread.
-  std::deque<State *> states;
+  std::deque<state<Topology> *> states;
 };
 
 } /* namespace infinite */

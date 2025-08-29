@@ -15,6 +15,14 @@ static my_state c = {&b, "c"};
 
 static infinite::state_machine<my_state> ism;
 
+ostream &operator<<(ostream &os, const my_state *s) {
+  if (s)
+    os << s->name;
+  else
+    os << "nullptr";
+  return os;
+}
+
 extern "C" int test_abc() {
   auto done = ism.go(&c);
   for (const auto &state : done.exits) {

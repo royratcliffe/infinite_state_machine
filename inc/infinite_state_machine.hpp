@@ -9,6 +9,9 @@
 // for efficient double-ended queue operations
 #include <deque>
 
+// for find algorithms
+#include <algorithm>
+
 // Why infinite state machine? This state machine allows for an arbitrary number
 // of nested states, enabling complex state hierarchies and transitions. No
 // limits on the nesting depth, i.e. the number of active states is only limited
@@ -65,20 +68,25 @@ public:
   struct gone go(State *to) {
     std::deque<State *> exits, entries;
     // super, sub --> sub, super (reverse)
-    while (!states.empty())
-      exits.push_front(states.pop_back());
+    while (!states.empty()) {
+      exits.push_front(states.back());
+      states.pop_back();
+    }
     if (to != nullptr) {
       // super.super, super, to!
       //
       // Avoid duplicating states in the entries deque.
       // Duplicates correspond to cyclic state topologies.
-      for (; to && !entries.contains(to); to = to->super)
+      for (; to && find(entries.cbegin(), entries.cend(), to) == entries.cend();
+           to = to->super)
         entries.push_front(to);
       // Now match up the exits and entries.
       // Transfer any matching states from exits to states.
       while (!exits.empty() && !entries.empty() &&
-             exits.first() == entries.first())
-        states.push_back(exits.pop_front());
+             exits.front() == entries.front()) {
+        states.push_back(exits.front());
+        exits.pop_front();
+      }
       for (auto state : entries)
         states.push_back(state);
       // or states.push_back(entries);

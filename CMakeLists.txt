@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(infinite)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+set(CMAKE_CXX_STANDARD 20)
 
 add_library(infinite
     inc/infinite_state_machine.hpp

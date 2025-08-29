@@ -32,7 +32,7 @@ add_executable(test_runner
 )
 target_link_libraries(test_runner PRIVATE infinite)
 
-add_test(NAME pat COMMAND test_runner test/pat)
+add_test(NAME abc COMMAND test_runner test/abc)
 
 # CPack configuration for packaging.
 install(TARGETS infinite ARCHIVE DESTINATION lib)

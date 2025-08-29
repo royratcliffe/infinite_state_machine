@@ -94,6 +94,7 @@ public:
         states.push_back(state);
       // or states.push_back(entries);
     }
+    std::reverse(exits.begin(), exits.end());
     return {exits, entries};
   }
 

@@ -49,7 +49,7 @@ public:
   //! transition completes. They appear in the correct order. Run all the exit
   //! handlers for the exited states from back to front, then run all the entry
   //! handlers for the entered states similarly.
-  struct gone {
+  struct transition {
     std::deque<state<Topology> *> exits, enters;
   };
 
@@ -67,7 +67,7 @@ public:
   //! \param to The new state to transition to.
   //! \return A struct containing the states that were exited and entered during
   //! the transition.
-  struct gone go(state<Topology> *to) {
+  struct transition go(state<Topology> *to) {
     std::deque<state<Topology> *> exits, enters;
     // super, sub --> sub, super (reverse)
     while (!states.empty()) {

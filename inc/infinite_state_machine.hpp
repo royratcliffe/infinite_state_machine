@@ -86,7 +86,7 @@ public:
       // Transfer any matching states from exits to states.
       while (!exits.empty() && !enters.empty() &&
              exits.back() == enters.front()) {
-        states.push_back(exits.front());
+        states.push_back(exits.back());
         exits.pop_back();
         enters.pop_front();
       }

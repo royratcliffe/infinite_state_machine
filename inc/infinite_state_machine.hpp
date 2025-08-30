@@ -70,10 +70,8 @@ public:
   struct transition go(state<Topology> *to) {
     std::deque<state<Topology> *> exits, enters;
     // super, sub --> sub, super (reverse)
-    while (!states.empty()) {
-      exits.push_back(states.back());
-      states.pop_back();
-    }
+    exits.assign(states.rbegin(), states.rend());
+    states.clear();
     if (to != nullptr) {
       // super.super, super, to!
       //
@@ -90,9 +88,7 @@ public:
         exits.pop_back();
         enters.pop_front();
       }
-      for (auto state : enters)
-        states.push_back(state);
-      // or states.push_back(enters);
+      states.insert(states.end(), enters.begin(), enters.end());
     }
     return {exits, enters};
   }

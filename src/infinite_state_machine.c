@@ -113,6 +113,9 @@ int infinite_state_machine_enter(struct infinite_state_machine *machine, struct 
     }
     /*
      * Run the enter actions *after* the machine stack adds the state.
+     * Technically, nothing prevents the action from applying yet another
+     * state transition, although higher-level code must be designed for
+     * reentrancy.
      */
     if (state->enter != NULL)
     {

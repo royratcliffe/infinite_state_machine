@@ -26,6 +26,10 @@ static struct state f = {.name = "f",
                          .infinite.super = &e.infinite,
                          .infinite.enter = enter_action,
                          .infinite.exit = exit_action};
+static struct state g = {.name = "g",
+                         .infinite.super = &d.infinite,
+                         .infinite.enter = enter_action,
+                         .infinite.exit = exit_action};
 
 static struct infinite_state_machine ism;
 
@@ -35,6 +39,12 @@ int test_def() {
   assert(infinite_state_machine_in(&ism, &d.infinite) == 1);
   assert(infinite_state_machine_in(&ism, &e.infinite) == 1);
   assert(infinite_state_machine_in(&ism, &f.infinite) == 1);
+  assert(infinite_state_machine_in(&ism, &g.infinite) == 0);
+  infinite_state_machine_goto(&ism, &g.infinite);
+  assert(infinite_state_machine_in(&ism, &d.infinite) == 1);
+  assert(infinite_state_machine_in(&ism, &e.infinite) == 0);
+  assert(infinite_state_machine_in(&ism, &f.infinite) == 0);
+  assert(infinite_state_machine_in(&ism, &g.infinite) == 1);
   return 0;
 }
 

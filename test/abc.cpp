@@ -40,7 +40,7 @@ operator<<(ostream &os,
 }
 
 extern "C" int test_abc() {
-  cout << ism.go(&c);;
+  cout << ism.go(&c);
   assert(ism.at() == &c);
   assert(ism.in(&a));
   assert(ism.in(&b));

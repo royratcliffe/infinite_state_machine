@@ -71,7 +71,7 @@ public:
     std::deque<state<Topology> *> exits, enters;
     // super, sub --> sub, super (reverse)
     while (!states.empty()) {
-      exits.push_front(states.back());
+      exits.push_back(states.back());
       states.pop_back();
     }
     if (to != nullptr) {
@@ -85,16 +85,15 @@ public:
       // Now match up the exits and enters.
       // Transfer any matching states from exits to states.
       while (!exits.empty() && !enters.empty() &&
-             exits.front() == enters.front()) {
+             exits.back() == enters.front()) {
         states.push_back(exits.front());
-        exits.pop_front();
+        exits.pop_back();
         enters.pop_front();
       }
       for (auto state : enters)
         states.push_back(state);
       // or states.push_back(enters);
     }
-    std::reverse(exits.begin(), exits.end());
     return {exits, enters};
   }
 

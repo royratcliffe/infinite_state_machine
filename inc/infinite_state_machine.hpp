@@ -79,7 +79,7 @@ public:
       //
       // Avoid duplicating states in the enters deque.
       // Duplicates correspond to cyclic state topologies.
-      for (; to && std::find(enters.cbegin(), enters.cend(), to) == enters.cend();
+      for (; to && std::find(enters.rbegin(), enters.rend(), to) == enters.rend();
            to = to->super)
         enters.push_front(to);
       // Now match up the exits and enters.

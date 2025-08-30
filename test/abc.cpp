@@ -50,5 +50,6 @@ extern "C" int test_abc() {
   assert(transition.exits.size() == 2);
   assert(transition.exits[0] == &c);
   assert(transition.exits[1] == &b);
+  assert(ism.at() == &a);
   return 0;
 }

@@ -39,11 +39,15 @@ ostream &operator<<(ostream &os,
 }
 
 extern "C" int test_abc() {
-  auto done = ism.go(&c);
-  cout << done;
+  cout << ism.go(&c);;
   assert(ism.at() == &c);
   assert(ism.in(&a));
   assert(ism.in(&b));
-  cout << ism.go(&a);
+  auto transition = ism.go(&a);
+  cout << transition;
+  assert(transition.enters.empty());
+  assert(transition.exits.size() == 2);
+  assert(transition.exits[0] == &c);
+  assert(transition.exits[1] == &b);
   return 0;
 }

@@ -22,9 +22,9 @@ namespace infinite {
 //! \details This struct serves as a base for all states in the state machine,
 //! unless otherwise overridden by a derived class.
 template <typename Topology> struct state {
-  using state_ptr = Topology *;
-  state_ptr super;
-  state_ptr self() { return static_cast<state_ptr>(this); }
+  using topology_ptr = Topology *;
+  topology_ptr super;
+  topology_ptr self() { return static_cast<topology_ptr>(this); }
 };
 
 //! \brief A state machine topology navigation class.

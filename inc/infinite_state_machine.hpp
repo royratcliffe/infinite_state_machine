@@ -50,7 +50,7 @@ public:
   //! handlers for the exited states from back to front, then run all the entry
   //! handlers for the entered states similarly.
   struct gone {
-    std::deque<state<Topology> *> exits, entries;
+    std::deque<state<Topology> *> exits, enters;
   };
 
   //! \brief Transition to a new state.
@@ -60,7 +60,7 @@ public:
   //! Do not make any assumptions about the topology. Specifically, do not
   //! assume that one state does not occupy more than one state machine terrain.
   //! If a state \e does appear in overlapping topologies, then the state will
-  //! appear in both the exits \e and entries. Consider this a correct
+  //! appear in both the exits \e and enters. Consider this a correct
   //! conclusion since the duplicated state re-enters from a different
   //! super-state. The nesting differs.
   //!
@@ -68,7 +68,7 @@ public:
   //! \return A struct containing the states that were exited and entered during
   //! the transition.
   struct gone go(state<Topology> *to) {
-    std::deque<state<Topology> *> exits, entries;
+    std::deque<state<Topology> *> exits, enters;
     // super, sub --> sub, super (reverse)
     while (!states.empty()) {
       exits.push_front(states.back());
@@ -77,25 +77,25 @@ public:
     if (to != nullptr) {
       // super.super, super, to!
       //
-      // Avoid duplicating states in the entries deque.
+      // Avoid duplicating states in the enters deque.
       // Duplicates correspond to cyclic state topologies.
-      for (; to && std::find(entries.cbegin(), entries.cend(), to) == entries.cend();
+      for (; to && std::find(enters.cbegin(), enters.cend(), to) == enters.cend();
            to = to->super)
-        entries.push_front(to);
-      // Now match up the exits and entries.
+        enters.push_front(to);
+      // Now match up the exits and enters.
       // Transfer any matching states from exits to states.
-      while (!exits.empty() && !entries.empty() &&
-             exits.front() == entries.front()) {
+      while (!exits.empty() && !enters.empty() &&
+             exits.front() == enters.front()) {
         states.push_back(exits.front());
         exits.pop_front();
-        entries.pop_front();
+        enters.pop_front();
       }
-      for (auto state : entries)
+      for (auto state : enters)
         states.push_back(state);
-      // or states.push_back(entries);
+      // or states.push_back(enters);
     }
     std::reverse(exits.begin(), exits.end());
-    return {exits, entries};
+    return {exits, enters};
   }
 
   // Operation go(to) is the only mutator.

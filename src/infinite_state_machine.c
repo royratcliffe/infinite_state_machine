@@ -1,3 +1,21 @@
+/*!
+ * \file infinite_state_machine.c
+ * \brief Stack-based hierarchical (potentially unbounded logical) state machine implementation.
+ *
+ * Provides push and pop (enter and exit) semantics plus goto that performs
+ * least–common–ancestor optimisation: only differing tail states are
+ * exited or entered.
+ *
+ * Invariants:
+ * - states[0..depth-1] are valid pointers, states[depth..] are \c NULL (after init or pop).
+ * - depth <= INFINITE_STATE_MACHINE_MAX_DEPTH.
+ *
+ * Notes:
+ * - Callbacks (enter and exit) are invoked after structural mutation so they observe the new stack.
+ * - Callbacks must NOT directly corrupt depth or states; they may trigger further transitions
+ *   only if higher-level code is designed for reentrancy.
+ */
+
 #include "infinite_state_machine.h"
 
 #include <string.h>
@@ -70,12 +88,6 @@ void infinite_state_machine_jump(struct infinite_state_machine *machine, struct 
     machine->depth = infinite_state_topology(state, INFINITE_STATE_MACHINE_MAX_DEPTH, machine->states) - machine->states;
 }
 
-/*!
- * \brief Checks if a state is currently active in the infinite state machine.
- * \param machine The infinite state machine.
- * \param state The state to check.
- * \return 1 if the state is active, 0 if it is not, or a negative error code on failure.
- */
 int infinite_state_machine_in(struct infinite_state_machine *machine, struct infinite_state *state)
 {
     if (machine == NULL || state == NULL)

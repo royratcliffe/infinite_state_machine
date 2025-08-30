@@ -1,3 +1,14 @@
+/*!
+ * \file infinite_state_machine.h
+ * \brief Public API for the infinite state machine.
+ * Provides functions to initialise, perform hierarchical transitions (goto and
+ * jump), query whether a state is active, and get the current top state.
+ *
+ * The machine keeps a stack (array) of active states up to
+ * \c{INFINITE_STATE_MACHINE_MAX_DEPTH}. Not thread-safe; external synchronisation
+ * is required for concurrent use.
+ */
+
 #ifndef INFINITE_STATE_MACHINE_H
 #define INFINITE_STATE_MACHINE_H
 
@@ -9,6 +20,9 @@
 
 /*!
  * \brief Represents an infinite state machine.
+ * This structure holds the current state hierarchy and allows for transitions
+ * between states.
+ * \note The structure is not thread-safe.
  */
 struct infinite_state_machine
 {

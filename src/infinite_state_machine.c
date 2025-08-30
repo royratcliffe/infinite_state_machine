@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2023, Roy Ratcliffe, Northumberland, United Kingdom
+ * SPDX-License-Identifier: MIT
+ */
 /*!
  * \file infinite_state_machine.c
  * \brief Stack-based hierarchical (potentially unbounded logical) state machine implementation.

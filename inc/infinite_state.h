@@ -1,3 +1,18 @@
+/*
+ * SPDX-FileCopyrightText: 2023, Roy Ratcliffe, Northumberland, United Kingdom
+ * SPDX-License-Identifier: MIT
+ */
+/*!
+ * \file infinite_state.h
+ * \brief Core definitions for the infinite (unbounded topology and depth albeit
+ * limited by memory resources) hierarchical state machine.
+ * \details Declares the infinite_state structure (a node in a singly-linked
+ * ancestry chain via its \c super pointer) and a helper to build a forward
+ * topology (outer to inner). The enter and exit callbacks are optional (being
+ * \c NULL if unused) and are invoked after push (enter) and \e after final
+ * removal (exit) respectively.
+ */
+
 #ifndef INFINITE_STATE_H
 #define INFINITE_STATE_H
 

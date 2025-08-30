@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2023, Roy Ratcliffe, Northumberland, United Kingdom
+ * SPDX-License-Identifier: MIT
+ */
 /*!
  * \file infinite_state_machine.h
  * \brief Public API for the infinite state machine.

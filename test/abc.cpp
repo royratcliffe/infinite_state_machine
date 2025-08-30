@@ -25,14 +25,14 @@ ostream &operator<<(ostream &os, const my_state *s) {
 
 ostream &operator<<(ostream &os,
                     const infinite::state_machine<my_state>::transition &transition) {
-  os << "Exited states: ";
+  os << "Exited states:";
   for (const auto &state : transition.exits) {
-    os << state->self()->name << " ";
+    os << " " << state->self()->name;
   }
   os << endl;
-  os << "\nEntered states: ";
+  os << "Entered states:";
   for (const auto &state : transition.enters) {
-    os << state->self()->name << " ";
+    os << " " << state->self()->name;
   }
   os << endl;
   return os;

@@ -70,6 +70,28 @@ void infinite_state_machine_jump(struct infinite_state_machine *machine, struct 
     machine->depth = infinite_state_topology(state, INFINITE_STATE_MACHINE_MAX_DEPTH, machine->states) - machine->states;
 }
 
+/*!
+ * \brief Checks if a state is currently active in the infinite state machine.
+ * \param machine The infinite state machine.
+ * \param state The state to check.
+ * \return 1 if the state is active, 0 if it is not, or a negative error code on failure.
+ */
+int infinite_state_machine_in(struct infinite_state_machine *machine, struct infinite_state *state)
+{
+    if (machine == NULL || state == NULL)
+    {
+        return -EINVAL;
+    }
+    for (int depth = 0; depth < machine->depth; depth++)
+    {
+        if (machine->states[depth] == state)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int infinite_state_machine_enter(struct infinite_state_machine *machine, struct infinite_state *state)
 {
     int err;

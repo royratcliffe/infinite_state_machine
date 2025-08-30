@@ -62,6 +62,14 @@ void infinite_state_machine_goto(struct infinite_state_machine *machine, struct 
 void infinite_state_machine_jump(struct infinite_state_machine *machine, struct infinite_state *state);
 
 /*!
+ * \brief Checks if a state is currently active in the infinite state machine.
+ * \param machine The infinite state machine.
+ * \param state The state to check.
+ * \return 1 if the state is active, 0 if it is not, or a negative error code on failure.
+ */
+int infinite_state_machine_in(struct infinite_state_machine *machine, struct infinite_state *state);
+
+/*!
  * \brief Gets the top state of the infinite state machine.
  * \param machine The infinite state machine.
  * \return The top state, or \c NULL if the machine is empty.

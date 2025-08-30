@@ -9,6 +9,9 @@
 // for efficient double-ended queue operations
 #include <deque>
 
+// for find algorithms
+#include <algorithm>
+
 // Why infinite state machine? This state machine allows for an arbitrary number
 // of nested states, enabling complex state hierarchies and transitions. No
 // limits on the nesting depth, i.e. the number of active states is only limited
@@ -18,15 +21,17 @@ namespace infinite {
 //! \brief A default abstract state representation.
 //! \details This struct serves as a base for all states in the state machine,
 //! unless otherwise overridden by a derived class.
-struct state {
-  struct state *super;
+template <typename Topology> struct state {
+  using topology_ptr = Topology *;
+  topology_ptr super;
+  topology_ptr self() { return static_cast<topology_ptr>(this); }
 };
 
 //! \brief A state machine topology navigation class.
 //! \details This class provides methods to navigate through the state machine's
 //! topology, allowing for transitions between states and querying the current
 //! state.
-template <typename State = state> class state_machine {
+template <typename Topology> class state_machine {
 public:
   //! \brief Destructor for the state machine.
   //! \details Cleans up the state machine and releases any resources.
@@ -44,8 +49,8 @@ public:
   //! transition completes. They appear in the correct order. Run all the exit
   //! handlers for the exited states from back to front, then run all the entry
   //! handlers for the entered states similarly.
-  struct gone {
-    std::deque<State *> exits, entries;
+  struct transition {
+    std::deque<state<Topology> *> exits, enters;
   };
 
   //! \brief Transition to a new state.
@@ -55,35 +60,38 @@ public:
   //! Do not make any assumptions about the topology. Specifically, do not
   //! assume that one state does not occupy more than one state machine terrain.
   //! If a state \e does appear in overlapping topologies, then the state will
-  //! appear in both the exits \e and entries. Consider this a correct
+  //! appear in both the exits \e and enters. Consider this a correct
   //! conclusion since the duplicated state re-enters from a different
   //! super-state. The nesting differs.
   //!
   //! \param to The new state to transition to.
   //! \return A struct containing the states that were exited and entered during
   //! the transition.
-  struct gone go(State *to) {
-    std::deque<State *> exits, entries;
+  struct transition go(state<Topology> *to) {
+    std::deque<state<Topology> *> exits, enters;
     // super, sub --> sub, super (reverse)
-    while (!states.empty())
-      exits.push_front(states.pop_back());
+    exits.assign(states.rbegin(), states.rend());
+    states.clear();
     if (to != nullptr) {
       // super.super, super, to!
       //
-      // Avoid duplicating states in the entries deque.
+      // Avoid duplicating states in the enters deque.
       // Duplicates correspond to cyclic state topologies.
-      for (; to && !entries.contains(to); to = to->super)
-        entries.push_front(to);
-      // Now match up the exits and entries.
+      for (;
+           to && std::find(enters.rbegin(), enters.rend(), to) == enters.rend();
+           to = to->super)
+        enters.push_front(to);
+      // Now match up the exits and enters.
       // Transfer any matching states from exits to states.
-      while (!exits.empty() && !entries.empty() &&
-             exits.first() == entries.first())
-        states.push_back(exits.pop_front());
-      for (auto state : entries)
-        states.push_back(state);
-      // or states.push_back(entries);
+      while (!exits.empty() && !enters.empty() &&
+             exits.back() == enters.front()) {
+        states.push_back(exits.back());
+        exits.pop_back();
+        enters.pop_front();
+      }
+      states.insert(states.end(), enters.begin(), enters.end());
     }
-    return {exits, entries};
+    return {exits, enters};
   }
 
   // Operation go(to) is the only mutator.
@@ -91,12 +99,16 @@ public:
 
   //! \brief Get the current state.
   //! \return The current state, or \c nullptr if there is no active state.
-  State *at() const { return states.empty() ? nullptr : states.back(); }
+  state<Topology> *at() const {
+    return states.empty() ? nullptr : states.back();
+  }
 
   //! \brief Check if a state is active.
   //! \param state The state to check.
   //! \return Answers \c true if the state is active, \c false otherwise.
-  bool in(State *state) const { return states.contains(state); }
+  bool in(state<Topology> *state) const {
+    return std::find(states.cbegin(), states.cend(), state) != states.cend();
+  }
 
 private:
   //! \brief The deque holding the active states.
@@ -108,7 +120,7 @@ private:
   //!
   //! \note This deque is not thread-safe and should be accessed
   //! only from a single thread.
-  std::deque<State *> states;
+  std::deque<state<Topology> *> states;
 };
 
 } /* namespace infinite */

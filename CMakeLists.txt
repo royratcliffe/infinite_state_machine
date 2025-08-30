@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.25)
 project(infinite)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+set(CMAKE_CXX_STANDARD 20)
 
 add_library(infinite
+    inc/infinite_state.h
+    src/infinite_state.c
+    inc/infinite_state_machine.h
+    src/infinite_state_machine.c
     inc/infinite_state_machine.hpp
     src/infinite_state_machine.cpp
 )
@@ -22,6 +26,7 @@ include(CTest)
 create_test_sourcelist(test_sources
     test_runner.c
     test/abc.cpp
+    test/def.c
 )
 
 # Add a test executable that links against the library.
@@ -32,7 +37,8 @@ add_executable(test_runner
 )
 target_link_libraries(test_runner PRIVATE infinite)
 
-add_test(NAME pat COMMAND test_runner test/pat)
+add_test(NAME abc COMMAND test_runner test/abc)
+add_test(NAME def COMMAND test_runner test/def)
 
 # CPack configuration for packaging.
 install(TARGETS infinite ARCHIVE DESTINATION lib)

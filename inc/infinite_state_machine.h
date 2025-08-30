@@ -4,7 +4,7 @@
 #include "infinite_state.h"
 
 #ifndef INFINITE_STATE_MACHINE_MAX_DEPTH
-#define INFINITE_STATE_MACHINE_MAX_DEPTH 4
+#define INFINITE_STATE_MACHINE_MAX_DEPTH 7
 #endif
 
 /*!

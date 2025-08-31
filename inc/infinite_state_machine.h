@@ -18,6 +18,15 @@
 
 #include "infinite_state.h"
 
+/*!
+ * \brief Maximum depth of any infinite state machine.
+ * Defaults to 7 unless already defined before the inclusion point of this header.
+ *
+ * Why 7? There is method in the choice a maximum depth of 7. Pointers and
+ * integers are 32 bits wide on a 32-bit machine. Seven pointers and one integer
+ * occupy 8 words, or 32 bytes. If a single machine requires more than seven
+ * levels of nesting, better to refactor the design to reduce complexity.
+ */
 #ifndef INFINITE_STATE_MACHINE_MAX_DEPTH
 #define INFINITE_STATE_MACHINE_MAX_DEPTH 7
 #endif

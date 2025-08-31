@@ -136,7 +136,12 @@ int infinite_state_machine_exit(struct infinite_state_machine *machine)
         return -EINVAL;
     }
     /*
-     * Run the exit actions *after* the machine stack removes the state.
+     * Run the exit actions *after* the machine stack removes the state. This is
+     * by design, as it allows the exit actions to mutate the state of the
+     * machine after the state is removed. It might seem counterintuitive, but
+     * it allows for more flexible state management. The argument to the exit
+     * function is the state being exited, and the machine itself, allowing for
+     * context-aware exit actions.
      */
     if (state->exit != NULL)
     {

@@ -24,8 +24,8 @@
  *
  * Why 7? There is method in the choice a maximum depth of 7. Pointers and
  * integers are 32 bits wide on a 32-bit machine. Seven pointers and one integer
- * occupy 8 words, or 32 bytes. if a single machine require more than nesting
- * than seven levels, better to refactor the design to reduce complexity.
+ * occupy 8 words, or 32 bytes. If a single machine requires more than seven
+ * levels of nesting, better to refactor the design to reduce complexity.
  */
 #ifndef INFINITE_STATE_MACHINE_MAX_DEPTH
 #define INFINITE_STATE_MACHINE_MAX_DEPTH 7

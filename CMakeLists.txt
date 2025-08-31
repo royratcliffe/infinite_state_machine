@@ -27,6 +27,7 @@ create_test_sourcelist(test_sources
     test_runner.c
     test/abc.cpp
     test/def.c
+    test/engine.c
 )
 
 # Add a test executable that links against the library.
@@ -39,6 +40,7 @@ target_link_libraries(test_runner PRIVATE infinite)
 
 add_test(NAME abc COMMAND test_runner test/abc)
 add_test(NAME def COMMAND test_runner test/def)
+add_test(NAME engine COMMAND test_runner test/engine)
 
 # CPack configuration for packaging.
 install(TARGETS infinite ARCHIVE DESTINATION lib)

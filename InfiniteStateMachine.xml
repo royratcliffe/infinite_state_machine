@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP21 Patch 2" creationDateTime="2025-08-31T14:32:38.5379288" />
-  <contentHeader name="Infinite State Machine Library" version="0.1.0.0" modificationDateTime="2025-08-31T14:32:18.2590946" organization="Roy Ratcliffe" author="Roy Ratcliffe">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP21 Patch 2" creationDateTime="2025-09-09T09:12:20.2386351" />
+  <contentHeader name="Infinite State Machine Library" version="0.1.1.0" modificationDateTime="2025-09-09T09:11:51.5874633" organization="Roy Ratcliffe" author="Roy Ratcliffe">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -22,12 +22,13 @@
           <property name="Description" type="string" />
           <property name="DocFormat" type="string">reStructuredText</property>
           <property name="IsEndUserLibrary" type="boolean">false</property>
+          <property name="IsStorageFormatPinned" type="boolean">false</property>
           <property name="LanguageModelAttribute" type="string">qualified-access-only</property>
-          <property name="Placeholder" type="string" />
+          <property name="Placeholder" type="string">ISML</property>
           <property name="Project" type="string">InfiniteStateMachine</property>
           <property name="Released" type="boolean">false</property>
           <property name="Title" type="string">Infinite State Machine Library</property>
-          <property name="Version" type="version">0.1.0.0</property>
+          <property name="Version" type="version">0.1.1.0</property>
           <property name="library-category-list" type="library-category-list" />
         </ProjectInformation>
       </data>
@@ -42,26 +43,12 @@
   </contentHeader>
   <types>
     <dataTypes>
-      <dataType name="IStatePtr">
-        <baseType>
-          <pointer>
-            <baseType>
-              <derived name="IState" />
-            </baseType>
-          </pointer>
-        </baseType>
-        <addData>
-          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-            <ObjectId>67d77a7c-dd2b-4411-a6e6-ae5e74133961</ObjectId>
-          </data>
-        </addData>
-      </dataType>
-      <dataType name="IStatePtrArray">
+      <dataType name="IStateArray">
         <baseType>
           <array>
             <dimension lower="0" upper="ISM.gc_iMaxDepth" />
             <baseType>
-              <derived name="IStatePtr" />
+              <derived name="IState" />
             </baseType>
           </array>
         </baseType>
@@ -76,9 +63,9 @@
       <pou name="StateMachine" pouType="functionBlock">
         <interface>
           <localVars>
-            <variable name="apitfStates">
+            <variable name="itfStates">
               <type>
-                <derived name="IStatePtrArray" />
+                <derived name="IStateArray" />
               </type>
             </variable>
             <variable name="iDepth">
@@ -115,7 +102,7 @@
               </interface>
               <body>
                 <ST>
-                  <xhtml xmlns="http://www.w3.org/1999/xhtml">iDepth := Topology(itfState, ISM.gc_iMaxDepth, apitfStates);
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">iDepth := Topology(itfState, ISM.gc_iMaxDepth, itfStates);
 </xhtml>
                 </ST>
               </body>
@@ -126,13 +113,13 @@
             <Method name="Top" ObjectId="62fc3b46-bec4-4351-863f-d1d11d3e8a72">
               <interface>
                 <returnType>
-                  <derived name="IStatePtr" />
+                  <derived name="IState" />
                 </returnType>
               </interface>
               <body>
                 <ST>
                   <xhtml xmlns="http://www.w3.org/1999/xhtml">IF iDepth &gt; 0 THEN
-	Top := apitfStates[iDepth - 1];
+	Top := itfStates[iDepth - 1];
 END_IF
 </xhtml>
                 </ST>
@@ -163,7 +150,7 @@ END_IF
                 <ST>
                   <xhtml xmlns="http://www.w3.org/1999/xhtml">Push := iDepth &lt; ISM.gc_iMaxDepth;
 IF Push THEN
-	apitfStates[iDepth] := ADR(itfState);
+	itfStates[iDepth] := itfState;
 	iDepth := iDepth + 1;
 END_IF
 </xhtml>
@@ -176,7 +163,7 @@ END_IF
             <Method name="Pop" ObjectId="6c98f508-a113-4f8e-8aef-8f47e33c25ed">
               <interface>
                 <returnType>
-                  <derived name="IStatePtr" />
+                  <derived name="IState" />
                 </returnType>
                 <addData>
                   <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
@@ -188,12 +175,12 @@ END_IF
                 <ST>
                   <xhtml xmlns="http://www.w3.org/1999/xhtml">IF iDepth &gt; 0 THEN
 	iDepth := iDepth - 1;
-	Pop := apitfStates[iDepth];
+	Pop := itfStates[iDepth];
     (*
      * Clear the popped state from the stack. This is not strictly necessary,
      * but it can help catch use-after-free bugs.
      *)
-	apitfStates[iDepth] := 0;
+	itfStates[iDepth] := 0;
 ELSE
 	Pop := 0;
 END_IF
@@ -232,14 +219,14 @@ END_IF
               <body>
                 <ST>
                   <xhtml xmlns="http://www.w3.org/1999/xhtml">fbStateMachine.Jump(itfState);
-WHILE iDepth &lt; Depth() AND iDepth &lt; fbStateMachine.Depth() AND AtLevel(iDepth) = fbStateMachine.AtLevel(iDepth) DO
+WHILE iDepth &lt; Depth() AND iDepth &lt; fbStateMachine.Depth() AND IsSameState(AtLevel(iDepth), fbStateMachine.AtLevel(iDepth)) DO
 	iDepth := iDepth + 1;
 END_WHILE
 WHILE Depth() &gt; iDepth DO
 	Leave();
 END_WHILE
 WHILE fbStateMachine.Depth() &gt; iDepth DO
-	Enter(fbStateMachine.AtLevel(iDepth)^);
+	Enter(fbStateMachine.AtLevel(iDepth));
 	iDepth := iDepth + 1;
 END_WHILE
 </xhtml>
@@ -268,7 +255,7 @@ END_WHILE
             <Method name="AtLevel" ObjectId="91eea73d-a85e-45a7-83bb-4c59b4021a4e">
               <interface>
                 <returnType>
-                  <derived name="IStatePtr" />
+                  <derived name="IState" />
                 </returnType>
                 <inputVars>
                   <variable name="iLevel">
@@ -281,7 +268,7 @@ END_WHILE
               <body>
                 <ST>
                   <xhtml xmlns="http://www.w3.org/1999/xhtml">IF 0 &lt;= iLevel AND iLevel &lt; iDepth THEN
-	AtLevel := apitfStates[iLevel];
+	AtLevel := itfStates[iLevel];
 END_IF
 </xhtml>
                 </ST>
@@ -320,9 +307,9 @@ END_IF
             <Method name="Leave" ObjectId="a5d1f593-03aa-4839-8991-f4001f19fb2a">
               <interface>
                 <localVars>
-                  <variable name="pitfState">
+                  <variable name="itfState">
                     <type>
-                      <derived name="IStatePtr" />
+                      <derived name="IState" />
                     </type>
                   </variable>
                 </localVars>
@@ -334,9 +321,9 @@ END_IF
               </interface>
               <body>
                 <ST>
-                  <xhtml xmlns="http://www.w3.org/1999/xhtml">pitfState := Pop();
-IF pitfState &lt;&gt; 0 THEN
-	pitfState^.Leave(THIS^);
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">itfState := Pop();
+IF itfState &lt;&gt; 0 THEN
+	itfState.Leave(THIS^);
 END_IF
 </xhtml>
                 </ST>
@@ -374,7 +361,7 @@ END_IF
  * The following do-while loop's condition assumes early-out semantics.
  * It assumes that the second sub-condition does *not* evaluate unless the first sub-condition is true.
  *)
-WHILE iLevel &lt; iDepth AND apitfStates[iLevel] &lt;&gt; ADR(itfState) DO
+WHILE iLevel &lt; iDepth AND itfStates[iLevel] &lt;&gt; itfState DO
 	iLevel := iLevel + 1;
 END_WHILE
 In := iLevel &lt; iDepth;
@@ -395,9 +382,9 @@ In := iLevel &lt; iDepth;
             <INT />
           </returnType>
           <inputVars>
-            <variable name="pitfState">
+            <variable name="itfState">
               <type>
-                <derived name="IStatePtr" />
+                <derived name="IState" />
               </type>
             </variable>
             <variable name="iDepth">
@@ -405,9 +392,9 @@ In := iLevel &lt; iDepth;
                 <INT />
               </type>
             </variable>
-            <variable name="apitfStates">
+            <variable name="itfStates">
               <type>
-                <derived name="REFERENCE TO IStatePtrArray" />
+                <derived name="REFERENCE TO IStateArray" />
               </type>
             </variable>
           </inputVars>
@@ -421,10 +408,10 @@ In := iLevel &lt; iDepth;
         </interface>
         <body>
           <ST>
-            <xhtml xmlns="http://www.w3.org/1999/xhtml">IF pitfState = 0 THEN
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">IF itfState = 0 THEN
 	Depth := 0;
 ELSE
-	Depth := Topology(pitfState^, iDepth, apitfStates);
+	Depth := Topology(itfState, iDepth, itfStates);
 END_IF
 </xhtml>
           </ST>
@@ -432,6 +419,36 @@ END_IF
         <addData>
           <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
             <ObjectId>e2f2db89-d2ae-4fb8-ba65-e049b64154e7</ObjectId>
+          </data>
+        </addData>
+      </pou>
+      <pou name="IsSameState" pouType="function">
+        <interface>
+          <returnType>
+            <BOOL />
+          </returnType>
+          <inputVars>
+            <variable name="itfStateLHS">
+              <type>
+                <derived name="IState" />
+              </type>
+            </variable>
+            <variable name="itfStateRHS">
+              <type>
+                <derived name="IState" />
+              </type>
+            </variable>
+          </inputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">IsSameState := itfStateLHS = itfStateRHS;
+</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>5975b8ae-a3cd-4207-b7f5-88b1e184f4cd</ObjectId>
           </data>
         </addData>
       </pou>
@@ -451,9 +468,9 @@ END_IF
                 <INT />
               </type>
             </variable>
-            <variable name="apitfStates">
+            <variable name="itfStates">
               <type>
-                <derived name="REFERENCE TO IStatePtrArray" />
+                <derived name="REFERENCE TO IStateArray" />
               </type>
             </variable>
           </inputVars>
@@ -470,8 +487,8 @@ END_IF
             <xhtml xmlns="http://www.w3.org/1999/xhtml">IF iDepth = 0 THEN
 	Topology := 0;
 ELSE
-	Topology := Depth(itfState.SuperState, iDepth - 1, apitfStates);
-	apitfStates[Topology] := ADR(itfState);
+	Topology := Depth(itfState.SuperState, iDepth - 1, itfStates);
+	itfStates[Topology] := itfState;
 	Topology := Topology + 1;
 END_IF
 </xhtml>
@@ -543,11 +560,7 @@ END_IF
           <Property name="SuperState" ObjectId="117cc3ab-dc36-4647-8a63-b7117f155ab6">
             <interface>
               <returnType>
-                <pointer>
-                  <baseType>
-                    <derived name="IState" />
-                  </baseType>
-                </pointer>
+                <derived name="IState" />
               </returnType>
             </interface>
             <SetAccessor />
@@ -560,20 +573,14 @@ END_IF
     </data>
     <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
       <Libraries>
-        <Library Name="#CAA Types" Namespace="CAA" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="CAA Types Extern, * (CAA Technical Workgroup)" />
-        <Library Name="#CAA FB Factory" Namespace="FBF" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="CAA FB Factory, * (CAA Technical Workgroup)" />
-        <Library Name="#CBML" Namespace="CBML" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Common Behaviour Model, * (3S - Smart Software Solutions GmbH)" />
         <PlaceholderRedirections>
-          <PlaceholderRedirection Placeholder="CAA FB Factory" Redirection="CAA FB Factory, 3.5.19.0 (CAA Technical Workgroup)" />
           <PlaceholderRedirection Placeholder="CAA ResMan" Redirection="CAA Ressource Manager Extern, 3.5.17.0 (CAA Technical Workgroup)" />
           <PlaceholderRedirection Placeholder="SysMem" Redirection="SysMem, 3.5.17.0 (System)" />
           <PlaceholderRedirection Placeholder="SysCpuHandling" Redirection="SysCpuHandling, 3.5.17.0 (System)" />
           <PlaceholderRedirection Placeholder="CAA MemBlockMan" Redirection="CAA Memory Block Manager Extern, 3.5.18.0 (CAA Technical Workgroup)" />
-          <PlaceholderRedirection Placeholder="CBML" Redirection="Common Behaviour Model, 4.0.0.0 (CODESYS)" />
           <PlaceholderRedirection Placeholder="SysSem Implementation" Redirection="SysSem Implementation, 3.5.17.0 (System)" />
           <PlaceholderRedirection Placeholder="SysSem" Redirection="SysSem, 3.5.17.0 (System)" />
           <PlaceholderRedirection Placeholder="CAA Callback" Redirection="CAA Callback Extern, 3.5.17.0 (CAA Technical Workgroup)" />
-          <PlaceholderRedirection Placeholder="CAA Types" Redirection="CAA Types Extern, 3.5.17.0 (CAA Technical Workgroup)" />
         </PlaceholderRedirections>
         <addData>
           <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
@@ -602,6 +609,7 @@ END_IF
           <Folder Name="Functions">
             <Object Name="Topology" ObjectId="1b77501e-fe27-4f81-8063-d710bea9b4de" />
             <Object Name="Depth" ObjectId="e2f2db89-d2ae-4fb8-ba65-e049b64154e7" />
+            <Object Name="IsSameState" ObjectId="5975b8ae-a3cd-4207-b7f5-88b1e184f4cd" />
           </Folder>
           <Folder Name="GlobalConstants">
             <Object Name="ISM" ObjectId="61a71296-3b39-4b4c-9e67-cea520fcd5cc" />
@@ -614,8 +622,7 @@ END_IF
             </Object>
           </Folder>
           <Folder Name="Types">
-            <Object Name="IStatePtrArray" ObjectId="c4f85b64-2f39-41e4-8528-d81e8a225514" />
-            <Object Name="IStatePtr" ObjectId="67d77a7c-dd2b-4411-a6e6-ae5e74133961" />
+            <Object Name="IStateArray" ObjectId="c4f85b64-2f39-41e4-8528-d81e8a225514" />
           </Folder>
         </Folder>
         <Object Name="Library Manager" ObjectId="8c1463b5-02f2-427d-bd06-9e39d42fcbff" />

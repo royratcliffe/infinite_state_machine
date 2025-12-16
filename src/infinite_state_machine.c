@@ -65,6 +65,10 @@ void infinite_state_machine_init(struct infinite_state_machine *machine)
 
 void infinite_state_machine_goto(struct infinite_state_machine *machine, struct infinite_state *state)
 {
+    /*
+     * If the target state is the same as the current top state, do nothing.
+     * This is a quick optimisation to avoid unnecessary state topology computation.
+     */
     if (state == infinite_state_machine_top(machine))
     {
         return;

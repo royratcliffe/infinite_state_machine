@@ -65,6 +65,9 @@ struct infinite_state
  * This function fills the topology vector with the state's sub-states
  * in "forward" order (from the outer state down to the inner).
  * The function returns a pointer to the end of the filled vector.
+ *
+ * This is a recursive implementation limited in depth.
+ *
  * \param state The current state.
  * \param depth The current depth.
  * \param topology The topology array to fill.

@@ -22,8 +22,18 @@ namespace infinite {
 //! \details This struct serves as a base for all states in the state machine,
 //! unless otherwise overridden by a derived class.
 template <typename Topology> struct state {
+  //! \brief Pointer type for the topology.
+  //! \details This type represents a pointer to the topology, allowing for
+  //! easy navigation and access to the topology's members.
   using topology_ptr = Topology *;
+  //! \brief Pointer to the super-state.
+  //! \details This pointer links to the parent state in the hierarchy,
+  //! enabling nested state structures.
   topology_ptr super;
+  //! \brief Returns a pointer to the current state.
+  //! \details This method provides access to the current state instance,
+  //! facilitating state management and transitions.
+  //! \return A pointer to the current state.
   topology_ptr self() { return static_cast<topology_ptr>(this); }
 };
 
@@ -50,7 +60,14 @@ public:
   //! handlers for the exited states from back to front, then run all the entry
   //! handlers for the entered states similarly.
   struct transition {
-    std::deque<state<Topology> *> exits, enters;
+    //! \brief The states that were exited during the transition.
+    //! \details This deque contains pointers to the states that were exited,
+    //! in the order they were exited.
+    std::deque<state<Topology> *> exits;
+    //! \brief The states that were entered during the transition.
+    //! \details This deque contains pointers to the states that were entered,
+    //! in the order they were entered.
+    std::deque<state<Topology> *> enters;
   };
 
   //! \brief Transition to a new state.

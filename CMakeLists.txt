@@ -64,7 +64,13 @@ include(CPack)
 # https://www.mcternan.me.uk/mscgen/
 find_package(Doxygen OPTIONAL_COMPONENTS dot mscgen dia)
 if(DOXYGEN_FOUND)
+    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${PROJECT_SOURCE_DIR}/README.md)
+    set(DOXYGEN_EXTRACT_ALL YES)
     set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_CXX YES)
     set(DOXYGEN_SOURCE_BROWSER YES)
-    doxygen_add_docs(doxy ${PROJECT_SOURCE_DIR}/inc ${PROJECT_SOURCE_DIR}/src)
+    doxygen_add_docs(doxy ${PROJECT_SOURCE_DIR}/README.md
+        ${PROJECT_SOURCE_DIR}/inc
+        ${PROJECT_SOURCE_DIR}/src
+        COMMENT "Generating API documentation with Doxygen"
+    )
 endif()

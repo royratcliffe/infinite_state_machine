@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+
 jobs:
   generate-docs:
     concurrency: ci-${{ github.ref }}
@@ -25,7 +26,7 @@ jobs:
           cmake -S . -B build
           cmake --build build --target doxy
 
-      - name: Deploy 🚀
+      - name: Deploy Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build/html

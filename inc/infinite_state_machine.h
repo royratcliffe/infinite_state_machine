@@ -9,7 +9,7 @@
  * jump), query whether a state is active, and get the current top state.
  *
  * The machine keeps a stack (array) of active states up to
- * \c{INFINITE_STATE_MACHINE_MAX_DEPTH}. Not thread-safe; external synchronisation
+ * \c INFINITE_STATE_MACHINE_MAX_DEPTH states deep. Not thread-safe; external synchronisation
  * is required for concurrent use.
  */
 
@@ -66,7 +66,7 @@ void infinite_state_machine_init(struct infinite_state_machine *machine);
  * Going to a state in the infinite state machine transitions the machine to the
  * new state. This will push the current state onto the stack and transition to
  * the new state. If the new state is the same as the current state, no action
- * is taken; likewise, if the new state is \c{NULL}, no action is taken.
+ * is taken; likewise, if the new state is a \c NULL pointer, no action is taken.
  * Otherwise, all the exit actions for the current state are run, and the new
  * state is entered by running all enter actions.
  *

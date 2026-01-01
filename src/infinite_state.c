@@ -22,7 +22,7 @@
  * Notes:
  *  - If cycles are possible in non-debug builds, consider unconditional
  *    duplicate detection or a visited flag to guarantee safety.
- *  - Could \c{assert(depth >= 0)} for defensive programming.
+ *  - Could \c assert(depth>=0) for defensive programming.
  */
 
 #include "infinite_state.h"

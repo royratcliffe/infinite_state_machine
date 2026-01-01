@@ -1,3 +1,5 @@
+See also original blog [post](https://roy.ratcliffe.me/2025/08/31/infinite-state-machine/).
+
 # Infinite State Machine
 
 The following presents a hierarchical (nested) state machine

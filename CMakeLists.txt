@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.25)
-project(infinite)
+project(infinite_state_machine
+    VERSION 1.0.0
+    DESCRIPTION "Infinite State Machine Library"
+    LANGUAGES C CXX
+)
 
+set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(infinite
@@ -59,7 +64,13 @@ include(CPack)
 # https://www.mcternan.me.uk/mscgen/
 find_package(Doxygen OPTIONAL_COMPONENTS dot mscgen dia)
 if(DOXYGEN_FOUND)
-    set(OPTIMIZE_OUTPUT_FOR_CXX YES)
+    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${PROJECT_SOURCE_DIR}/README.md)
+    set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_CXX YES)
     set(DOXYGEN_SOURCE_BROWSER YES)
-    doxygen_add_docs(doxy ${PROJECT_SOURCE_DIR}/inc ${PROJECT_SOURCE_DIR}/src)
+    doxygen_add_docs(doxy ${PROJECT_SOURCE_DIR}/README.md
+        ${PROJECT_SOURCE_DIR}/inc
+        ${PROJECT_SOURCE_DIR}/src
+        COMMENT "Generating API documentation with Doxygen"
+    )
 endif()

@@ -1,0 +1,6 @@
+<map id="infinite_state_machine" name="infinite_state_machine">
+<area shape="rect" id="Node000001" title="Represents an infinite state machine. This structure holds the current state hierarchy and allows for..." alt="" coords="5,93,176,119"/>
+<area shape="rect" id="Node000002" href="$structinfinite__state.html" title="The state structure for the infinite state. This structure represents a state in the infinite state m..." alt="" coords="37,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,45,93,93,88,93,88,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="159,9,171,18,162,26,145,29,144,23,160,21,165,18,156,14"/>
+</map>

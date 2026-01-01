@@ -1,0 +1,5 @@
+<map id="inc/infinite_state_machine.h" name="inc/infinite_state_machine.h">
+<area shape="rect" id="Node000001" title="Public API for the infinite state machine. Provides functions to initialise, perform hierarchical tra..." alt="" coords="5,5,136,45"/>
+<area shape="rect" id="Node000002" href="$infinite__state__machine_8c.html" title="Stack&#45;based hierarchical (potentially unbounded logical) state machine implementation." alt="" coords="5,93,136,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,59,73,93,68,93,68,59"/>
+</map>

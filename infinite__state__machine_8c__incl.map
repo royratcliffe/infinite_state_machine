@@ -1,0 +1,11 @@
+<map id="src/infinite_state_machine.c" name="src/infinite_state_machine.c">
+<area shape="rect" id="Node000001" title="Stack&#45;based hierarchical (potentially unbounded logical) state machine implementation." alt="" coords="182,5,313,45"/>
+<area shape="rect" id="Node000002" href="$infinite__state__machine_8h.html" title="Public API for the infinite state machine. Provides functions to initialise, perform hierarchical tra..." alt="" coords="5,93,188,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,48,133,89,130,84,210,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="212,93,283,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="250,46,250,79,245,79,245,46"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="307,93,375,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="272,44,318,82,314,86,268,48"/>
+<area shape="rect" id="Node000003" href="$infinite__state_8h.html" title="Core definitions for the infinite (unbounded topology and depth albeit limited by memory resources) h..." alt="" coords="37,167,156,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,119,99,153,94,153,94,119"/>
+</map>

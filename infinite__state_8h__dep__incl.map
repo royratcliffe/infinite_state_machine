@@ -1,0 +1,9 @@
+<map id="inc/infinite_state.h" name="inc/infinite_state.h">
+<area shape="rect" id="Node000001" title="Core definitions for the infinite (unbounded topology and depth albeit limited by memory resources) h..." alt="" coords="79,5,222,31"/>
+<area shape="rect" id="Node000002" href="$infinite__state__machine_8h.html" title="Public API for the infinite state machine. Provides functions to initialise, perform hierarchical tra..." alt="" coords="5,79,136,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,42,92,80,88,77,127,38"/>
+<area shape="rect" id="Node000004" href="$infinite__state_8c.html" title="Implementation of infinite state machine topology traversal." alt="" coords="160,86,301,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,39,221,84,217,88,171,42"/>
+<area shape="rect" id="Node000003" href="$infinite__state__machine_8c.html" title="Stack&#45;based hierarchical (potentially unbounded logical) state machine implementation." alt="" coords="5,167,136,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="73,133,73,166,68,166,68,133"/>
+</map>

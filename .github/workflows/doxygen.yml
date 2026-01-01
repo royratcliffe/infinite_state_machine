@@ -10,7 +10,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v6
 
-      - name: Install and Build 🔧
+      - name: Install Doxygen and Dependencies 📦
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz mscgen dia
+
+      - name: Generate Documentation 🔧
         run: |
           mkdir build
           cmake --build build --config Debug --target doxy

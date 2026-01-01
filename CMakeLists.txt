@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
-project(infinite)
+project(infinite_state_machine
+    VERSION 1.0.0
+    DESCRIPTION "Infinite State Machine Library"
+    LANGUAGES C CXX
+)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 20)

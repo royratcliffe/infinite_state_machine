@@ -12,6 +12,7 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
+          mkdir build
           cmake --build build --config Debug --target doxy
 
       - name: Deploy 🚀

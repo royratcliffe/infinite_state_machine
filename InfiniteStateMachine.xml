@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP21 Patch 2" creationDateTime="2025-09-09T09:12:20.2386351" />
-  <contentHeader name="Infinite State Machine Library" version="0.1.1.0" modificationDateTime="2025-09-09T09:11:51.5874633" organization="Roy Ratcliffe" author="Roy Ratcliffe">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP21 Patch 2" creationDateTime="2025-10-15T13:16:43.0309977" />
+  <contentHeader name="Infinite State Machine Library" version="0.1.1.1" modificationDateTime="2025-09-09T17:58:13.641387" organization="Roy Ratcliffe" author="Roy Ratcliffe">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -28,7 +28,7 @@
           <property name="Project" type="string">InfiniteStateMachine</property>
           <property name="Released" type="boolean">false</property>
           <property name="Title" type="string">Infinite State Machine Library</property>
-          <property name="Version" type="version">0.1.1.0</property>
+          <property name="Version" type="version">0.1.1.1</property>
           <property name="library-category-list" type="library-category-list" />
         </ProjectInformation>
       </data>
@@ -102,7 +102,7 @@
               </interface>
               <body>
                 <ST>
-                  <xhtml xmlns="http://www.w3.org/1999/xhtml">iDepth := Topology(itfState, ISM.gc_iMaxDepth, itfStates);
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">iDepth := DepthOfState(itfState, ISM.gc_iMaxDepth, itfStates);
 </xhtml>
                 </ST>
               </body>
@@ -376,7 +376,7 @@ In := iLevel &lt; iDepth;
           </data>
         </addData>
       </pou>
-      <pou name="Depth" pouType="function">
+      <pou name="DepthOfState" pouType="function">
         <interface>
           <returnType>
             <INT />
@@ -409,9 +409,9 @@ In := iLevel &lt; iDepth;
         <body>
           <ST>
             <xhtml xmlns="http://www.w3.org/1999/xhtml">IF itfState = 0 THEN
-	Depth := 0;
+	DepthOfState := 0;
 ELSE
-	Depth := Topology(itfState, iDepth, itfStates);
+	DepthOfState := Topology(itfState, iDepth, itfStates);
 END_IF
 </xhtml>
           </ST>
@@ -487,7 +487,7 @@ END_IF
             <xhtml xmlns="http://www.w3.org/1999/xhtml">IF iDepth = 0 THEN
 	Topology := 0;
 ELSE
-	Topology := Depth(itfState.SuperState, iDepth - 1, itfStates);
+	Topology := DepthOfState(itfState.SuperState, iDepth - 1, itfStates);
 	itfStates[Topology] := itfState;
 	Topology := Topology + 1;
 END_IF
@@ -568,6 +568,9 @@ END_IF
             <addData />
           </Property>
         </Properties>
+        <Inheritance>
+          <Extends>__SYSTEM.IQueryInterface</Extends>
+        </Inheritance>
         <addData />
       </Interface>
     </data>
@@ -608,7 +611,7 @@ END_IF
           </Folder>
           <Folder Name="Functions">
             <Object Name="Topology" ObjectId="1b77501e-fe27-4f81-8063-d710bea9b4de" />
-            <Object Name="Depth" ObjectId="e2f2db89-d2ae-4fb8-ba65-e049b64154e7" />
+            <Object Name="DepthOfState" ObjectId="e2f2db89-d2ae-4fb8-ba65-e049b64154e7" />
             <Object Name="IsSameState" ObjectId="5975b8ae-a3cd-4207-b7f5-88b1e184f4cd" />
           </Folder>
           <Folder Name="GlobalConstants">

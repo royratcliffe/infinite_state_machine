@@ -1,6 +1,5 @@
 ---
 BasedOnStyle: Microsoft
-ColumnLimit: 160
+ColumnLimit: 80
 AlignEscapedNewlines: Left
-IndentPPDirectives: None
 ...

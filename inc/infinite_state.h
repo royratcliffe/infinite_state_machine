@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2025, Roy Ratcliffe, Northumberland, United Kingdom
  * SPDX-License-Identifier: MIT
  */
+
 /*!
  * \file infinite_state.h
  * \brief Core definitions for the infinite (unbounded topology and depth albeit
@@ -12,7 +13,6 @@
  * \c NULL if unused) and are invoked after push (enter) and \e after final
  * removal (exit) respectively.
  */
-
 #ifndef INFINITE_STATE_H
 #define INFINITE_STATE_H
 

@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2025, Roy Ratcliffe, Northumberland, United Kingdom
  * SPDX-License-Identifier: MIT
  */
+
 /*!
  * \file infinite_state_machine.h
  * \brief Public API for the infinite state machine.
@@ -12,7 +13,6 @@
  * \c INFINITE_STATE_MACHINE_MAX_DEPTH states deep. Not thread-safe; external synchronisation
  * is required for concurrent use.
  */
-
 #ifndef INFINITE_STATE_MACHINE_H
 #define INFINITE_STATE_MACHINE_H
 

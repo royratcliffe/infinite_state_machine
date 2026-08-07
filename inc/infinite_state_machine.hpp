@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
+
 //! \file infinite_state_machine.hpp
 //! \details This file contains the definition of the infinite state machine,
 //! allowing for complex state hierarchies and transitions.
-
 #ifndef INFINITE_STATE_MACHINE_HPP_
 #define INFINITE_STATE_MACHINE_HPP_
 

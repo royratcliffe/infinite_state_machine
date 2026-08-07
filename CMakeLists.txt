@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 project(infinite_state_machine
-    VERSION 1.0.0
+    VERSION 1.0.1
     DESCRIPTION "Infinite State Machine Library"
     LANGUAGES C CXX
 )
@@ -53,7 +53,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/infinite_state_machine.hpp
         DESTINATION include)
 set(CPACK_GENERATOR "TGZ")
 set(CPACK_PACKAGE_NAME "infinite")
-set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_VERSION "1.0.1")
 set(CPACK_PACKAGE_DESCRIPTION "Infinite State Machine Library")
 set(CPACK_PACKAGE_VENDOR "Roy Ratcliffe")
 set(CPACK_PACKAGE_CONTACT "Roy Ratcliffe <roy@ratcliffe.me>")

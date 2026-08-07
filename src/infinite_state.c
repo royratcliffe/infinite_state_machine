@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: 2023, Roy Ratcliffe, Northumberland, United Kingdom
  * SPDX-License-Identifier: MIT
  */
+
 /*!
  * \file infinite_state.c
  * \brief Implementation of infinite state machine topology traversal.
@@ -24,7 +25,6 @@
  *    duplicate detection or a visited flag to guarantee safety.
  *  - Could \c assert(depth>=0) for defensive programming.
  */
-
 #include "infinite_state.h"
 
 #include <stddef.h>

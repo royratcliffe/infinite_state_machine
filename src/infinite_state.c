@@ -37,6 +37,13 @@ struct infinite_state **infinite_state_topology(struct infinite_state *state, in
         return topology;
     }
 
+    /*
+     * Build a chain of unique states from the given state up to the root of the
+     * hierarchy. The chain is built in reverse order, starting from the given
+     * state and moving up to its super-states. The chain is stored in a local
+     * array, and the count of unique states is tracked. If a duplicate state is
+     * found (in debug mode), the traversal stops to prevent infinite loops.
+     */
     struct infinite_state *chain[depth];
     int count = 0;
 
@@ -60,6 +67,14 @@ struct infinite_state **infinite_state_topology(struct infinite_state *state, in
         chain[count++] = current;
     }
 
+    /*
+     * Copy the chain into the topology array in reverse order. This ensures
+     * that the outermost state is at the beginning of the topology array and
+     * the innermost state is at the end. The loop runs from count down to 1,
+     * copying each state from the chain into the topology array. The pointer to
+     * the topology array is incremented after each copy, so that it points to
+     * the next free slot after the last written state.
+     */
     for (int index = count; index > 0; index--)
     {
         *topology++ = chain[index - 1];

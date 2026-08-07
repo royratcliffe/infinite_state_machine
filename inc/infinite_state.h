@@ -66,7 +66,7 @@ struct infinite_state
  * in "forward" order (from the outer state down to the inner).
  * The function returns a pointer to the end of the filled vector.
  *
- * This is a recursive implementation limited in depth.
+ * This is an iterative implementation limited in depth.
  *
  * \param state The current state.
  * \param depth The current depth.

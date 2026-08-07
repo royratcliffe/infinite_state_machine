@@ -32,26 +32,38 @@
 struct infinite_state **infinite_state_topology(struct infinite_state *state, int depth,
                                                 struct infinite_state **topology)
 {
-    /*
-     * Get the topology of the infinite state machine.
-     * This function traverses the state hierarchy and collects all states
-     * in the specified topology array.
-     */
-    if (state == NULL || depth == 0)
+    if (state == NULL || depth <= 0)
     {
         return topology;
     }
-    struct infinite_state **sub = infinite_state_topology(state->super, depth - 1, topology);
-#ifdef DEBUG
-    for (struct infinite_state **super = topology; super != sub; super++)
+
+    struct infinite_state *chain[depth];
+    int count = 0;
+
+    for (struct infinite_state *current = state; current != NULL && count < depth;
+         current = current->super)
     {
-        if (*super == state)
+#ifdef DEBUG
+        for (int index = 0; index < count; index++)
         {
-            // If we found the state in the super-states, we need to stop.
-            return sub;
+            if (chain[index] == current)
+            {
+                current = NULL;
+                break;
+            }
         }
-    }
 #endif
-    *sub = state;
-    return sub + 1;
+        if (current == NULL)
+        {
+            break;
+        }
+        chain[count++] = current;
+    }
+
+    for (int index = count; index > 0; index--)
+    {
+        *topology++ = chain[index - 1];
+    }
+
+    return topology;
 }

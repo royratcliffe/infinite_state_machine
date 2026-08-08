@@ -75,9 +75,9 @@ struct infinite_state **infinite_state_topology(struct infinite_state *state, in
      * the topology array is incremented after each copy, so that it points to
      * the next free slot after the last written state.
      */
-    for (int index = count; index > 0; index--)
+    while (count > 0)
     {
-        *topology++ = chain[index - 1];
+        *topology++ = chain[--count];
     }
 
     return topology;
